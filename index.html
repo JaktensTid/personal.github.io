@@ -107,29 +107,38 @@
     </footer>
   </div>
 
-  <script>
-    (function () {
-    // Run only on first load
-    if (!localStorage.getItem("blockBackOnce")) {
-        // Mark that we've triggered the block
-        localStorage.setItem("blockBackOnce", "yes");
+ <script>
+(function () {
 
-        // Push a dummy history state so the back button has somewhere to "go"
+    // 1. If this is the *first* visit in this session
+    if (!sessionStorage.getItem('redirected-once')) {
+
+        // mark that we redirected once
+        sessionStorage.setItem('redirected-once', 'yes');
+
+        // show alert BEFORE redirect
+        alert("Back button is disabled on first load!");
+
+        // force redirect (redirect chain)
+        window.location.href = window.location.href;
+        return;
+    }
+
+    // 2. If this is the second visit after redirect
+    // Do NOT prevent back button anymore, but block on FIRST back navigation
+    if (!sessionStorage.getItem('allowed-to-go-back')) {
         history.pushState(null, "", location.href);
 
-        // Intercept the back-button press
-        window.onpopstate = function () {
-            // Show message
-            alert("Back navigation is disabled this time.");
-
-            // Immediately push state again so the user stays on the page
+        window.addEventListener("popstate", function () {
+            alert("You can't go back right now!");
             history.pushState(null, "", location.href);
-
-            // Remove the flag so NEXT back press is allowed normally
-            localStorage.removeItem("blockBackOnce");
-        };
+            // Now allow going back next time
+            sessionStorage.setItem('allowed-to-go-back', 'yes');
+        });
     }
+
 })();
-  </script>
+</script>
+
 </body>
 </html>
