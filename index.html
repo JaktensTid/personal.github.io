@@ -108,7 +108,28 @@
   </div>
 
   <script>
-    history.pushState(null, null, location.href); history.back(); history.forward(); window.onpopstate = function () { history.go(1); }; 
+    (function () {
+    // Run only on first load
+    if (!localStorage.getItem("blockBackOnce")) {
+        // Mark that we've triggered the block
+        localStorage.setItem("blockBackOnce", "yes");
+
+        // Push a dummy history state so the back button has somewhere to "go"
+        history.pushState(null, "", location.href);
+
+        // Intercept the back-button press
+        window.onpopstate = function () {
+            // Show message
+            alert("Back navigation is disabled this time.");
+
+            // Immediately push state again so the user stays on the page
+            history.pushState(null, "", location.href);
+
+            // Remove the flag so NEXT back press is allowed normally
+            localStorage.removeItem("blockBackOnce");
+        };
+    }
+})();
   </script>
 </body>
 </html>
