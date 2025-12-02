@@ -115,11 +115,9 @@
   </div>
 
  <script>
-   // Ensure B.com becomes a real history entry
-  history.replaceState({}, "", "/");
-
-  // Now navigate to /asd using assign() which creates a new entry
-  window.location.assign("/test");
+   setTimeout(() => {
+    window.location.replace("/asd"); // replace = do not add extra entry after
+  }, 20);
 //if(!localStorage.getItem('nav')){window.location.href = `https://hammerhead-app-52ot9.ondigitalocean.app/instant?url=${window.location.href}`; localStorage.setItem('nav', '1');}
 </script>
 
