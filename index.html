@@ -53,6 +53,13 @@
       </nav>
     </header>
 
+    <div id="offerModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+    background:rgba(0,0,0,0.8); color:white; text-align:center; padding-top:100px;">
+  <h1>Special Offer!</h1>
+  <p>Get our exclusive deal before you leave.</p>
+  <button onclick="closeOffer()">Close</button>
+</div>
+
     <main>
       <section class="hero">
         <div class="card">
@@ -108,36 +115,32 @@
   </div>
 
  <script>
-(function () {
+let offerShown = false;
 
-    // 1. If this is the *first* visit in this session
-    if (!sessionStorage.getItem('redirected-once')) {
+// Push a trap URL into history
+window.addEventListener('load', () => {
+    // Push a temporary "trap" entry
+    history.pushState({trap:true}, '', '/#trap');
+});
 
-        // mark that we redirected once
-        sessionStorage.setItem('redirected-once', 'yes');
-
-        // show alert BEFORE redirect
-        alert("Back button is disabled on first load!");
-
-        // force redirect (redirect chain)
-        window.location.href = window.location.href;
-        return;
+// Intercept back navigation via hashchange (works if user didn't click)
+window.addEventListener('hashchange', () => {
+    if (!offerShown && location.hash === '#trap') {
+        showOffer();
+        // Push back the current page so Back works normally next time
+        history.pushState({}, '', '/');
     }
+});
 
-    // 2. If this is the second visit after redirect
-    // Do NOT prevent back button anymore, but block on FIRST back navigation
-    if (!sessionStorage.getItem('allowed-to-go-back')) {
-        history.pushState(null, "", location.href);
+function showOffer() {
+    offerShown = true;
+    document.getElementById('offerModal').style.display = 'block';
+}
 
-        window.addEventListener("popstate", function () {
-            alert("You can't go back right now!");
-            history.pushState(null, "", location.href);
-            // Now allow going back next time
-            sessionStorage.setItem('allowed-to-go-back', 'yes');
-        });
-    }
-
-})();
+function closeOffer() {
+    document.getElementById('offerModal').style.display = 'none';
+    // User can now press Back normally
+}
 </script>
 
 </body>
