@@ -217,24 +217,21 @@
 </div>
 
 <script>
-    (function() {
-    console.log("Back-detection test script loaded.");
+    document.addEventListener("DOMContentLoaded",
+        () => {
+            var e = {
+                _sf: "back"
+            };
+            history.replaceState(e, "");
+            history.pushState(e, document.title, location.href);
 
-    // Step 1: Replace the initial state with a known marker
-    history.replaceState({ marker: "initial" }, "", location.href);
-
-    // Step 2: Push a second state so Back will target our marker
-    history.pushState({ marker: "back-test" }, "", location.href + "#x");
-
-    // Step 3: Listen for popstate
-    window.addEventListener("popstate", function(event) {
-        console.log("popstate fired:", event.state);
-
-        if (event.state && event.state.marker === "initial") {
-            console.log("Back navigation detected BEFORE any user interaction.");
+            window.addEventListener("popstate", (function (n) {
+                    if ("back" !== (n.state || {})._sf)
+                        return !0;
+                }
+            ))
         }
-    });
-})();
+    );
 </script>
 
 </body>
