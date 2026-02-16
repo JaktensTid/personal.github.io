@@ -134,11 +134,12 @@
     </style>
     <!-- BannerFlow Script for Seed Site B -->
 <script>
+  sessionStorage.setItem('banners_redirectfrom', window.location.href);
   var s = document.createElement('script');
   s.async = true;
-  s.src = 'https://235123.xyz/api/v1/scripts/banners.js';
-  s.setAttribute('data-website-id', 'a6a4a4ba-3f8e-4a68-8d0c-a55208b970a6');
-  s.setAttribute('data-host-url', 'https://235123.xyz');
+  s.src = 'https://localhost:5073/api/v1/scripts/banners.js';
+  s.setAttribute('data-website-id', '27ff4fa5-aa26-44fa-9ec3-24e1b45a4a95');
+  s.setAttribute('data-host-url', 'https://localhost:5073');
   document.head.appendChild(s);
 </script>
 </head>
